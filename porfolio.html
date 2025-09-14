@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ikhlaq Ahmad's Data Science Portfolio</title>
+    <style>
+        /* CSS Variables for Theming */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --accent-color: #007bff;
+            --secondary-color: #6c757d;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --card-bg: #f8f9fa;
+        }
+        body.dark-mode {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --accent-color: #4da6ff;
+            --secondary-color: #a0a0a0;
+            --card-bg: #2c2c2c;
+        }
+
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header/Navbar */
+        header {
+            position: fixed;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+        body.dark-mode header {
+            background: rgba(26,26,26,0.95);
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        .nav-links li {
+            margin-left: 30px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+        .dark-toggle {
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+        .menu-toggle {
+            display: none;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        #home {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, var(--accent-color), #0056d2);
+            color: #fff;
+            animation: fadeIn 1.2s ease-out;
+        }
+        #home .hero-content {
+            max-width: 800px;
+            padding: 20px;
+        }
+        #home h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+        }
+        #home p {
+            font-size: 1.3em;
+            margin-bottom: 25px;
+        }
+        .btn {
+            background: #fff;
+            color: var(--accent-color);
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            background: var(--accent-color);
+            color: #fff;
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 0;
+            animation: fadeInUp 1s ease-out;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        h2 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            color: var(--accent-color);
+        }
+
+        /* About */
+        #about {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+        }
+        #about img {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+        #about img:hover {
+            transform: scale(1.1);
+        }
+        #about .bio {
+            max-width: 600px;
+        }
+        #about .bio p {
+            margin-bottom: 15px;
+        }
+        #about .bio a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        #about .bio a:hover {
+            text-decoration: underline;
+        }
+
+        /* Skills */
+        #skills ul {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+            list-style: none;
+        }
+        #skills li {
+            background: var(--card-bg);
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+        #skills li:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Projects */
+        #projects .project {
+            background: var(--card-bg);
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+        #projects .project:hover {
+            transform: translateY(-5px);
+        }
+        #projects h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+        #projects p {
+            margin-bottom: 15px;
+        }
+        #projects .tech-stack {
+            font-style: italic;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+        #projects .project-links a {
+            margin-right: 15px;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        #projects .project-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--secondary-color);
+            color: #fff;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: var(--card-bg);
+                box-shadow: var(--shadow);
+                padding: 20px;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links li {
+                margin: 10px 0;
+                text-align: center;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            #about {
+                flex-direction: column;
+                text-align: center;
+            }
+            #about img {
+                margin-bottom: 20px;
+            }
+            #home h1 {
+                font-size: 2.5em;
+            }
+            #home p {
+                font-size: 1.1em;
+            }
+  #projects .context {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Ikhlaq Ahmad</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+            </ul>
+            <div class="dark-toggle">🌙</div>
+            <div class="menu-toggle">☰</div>
+        </nav>
+    </header>
+
+    <section id="home">
+        <div class="hero-content">
+            <h1>Data Science & Machine Learning Portfolio</h1>
+            <p>Building innovative AI and data-driven solutions</p>
+            <a href="#projects" class="btn">Explore My Work</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2>About Me</h2>
+            <div class="flex">
+               
+                <div class="bio">
+                    <p>Computer Science graduate with expertise in Machine Learning, NLP, and Data Science, proficient in SQL, PostgreSQL, and Python for data-driven solutions. I led the development of an AI-Based Career Guidance Platform for my Bachelor thesis, focusing on scalable ML and NLP systems. Passionate about advancing AI research, I aim to contribute to cutting-edge innovations through a Master’s in Germany.</p>
+                    <p>GitHub: <a href="https://github.com/code927">code927</a> | Email: <a href="mailto:ikhlaq.ahmad.official@gmail.com">ikhlaq.ahmad.official@gmail.com</a> | Phone: +92 315 4252919</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="container">
+            <h2>Skills</h2>
+            <ul>
+                <li>Machine Learning</li>
+                <li>Natural Language Processing (NLP)</li>
+                <li>Data Science</li>
+                <li>SQL</li>
+                <li>PostgreSQL</li>
+                <li>Python</li>
+                <li>JavaScript</li>
+                <li>Data Visualization</li>
+                <li>Scikit-learn</li>
+                <li>TensorFlow</li>
+                <li>NLTK</li>
+                <li>Pandas</li>
+                <li>Matplotlib</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="projects">
+
+        <div class="container">
+            <h2>Projects</h2>
+      <p class="context">Below are selected academic and personal projects demonstrating my expertise in machine learning, natural language processing, and data science, developed to solve real-world problems and advance my research skills.</p>
+
+            <div class="project">
+                <h3>AI-Based Career Guidance Platform</h3>
+                <p>Led the development of a scalable ML recommendation engine and NLP-based job-matching module for a career guidance platform. Utilized advanced algorithms to match user profiles with job opportunities, achieving high accuracy and real-world applicability. Integrated with PostgreSQL for efficient data management.</p>
+                <p class="tech-stack">Tech Stack: Python, TensorFlow, NLTK, PostgreSQL</p>
+                <div class="project-links">
+                    <a href="https://brilliant-truffle-2d0d47.netlify.app/">View Site</a>
+                </div>
+            </div>
+            <div class="project">
+                <h3>Breast Cancer Prediction</h3>
+                <p>Developed a machine learning model to predict breast cancer malignancy using the Wisconsin Breast Cancer Dataset. Implemented data preprocessing, feature selection, and classification algorithms in Python, achieving high accuracy. Built a web interface for user-friendly predictions.</p>
+                <p class="tech-stack">Tech Stack: Python, Scikit-learn, Jupyter Notebook, HTML, Flask</p>
+                <div class="project-links">
+                    <a href="https://github.com/code927/Breast-Cancer-Prediction">GitHub Repository</a>
+                </div>
+            </div>
+            <div class="project">
+                <h3>Movie Recommendation App</h3>
+                <p>Developed a movie recommendation system using collaborative filtering and content-based ML algorithms. Implemented a user-friendly interface with JavaScript and integrated APIs for real-time movie data retrieval. Optimized for performance and user engagement.</p>
+                <p class="tech-stack">Tech Stack: JavaScript, React, REST APIs</p>
+                <div class="project-links">
+                    <a href="https://github.com/code927/movie-app">GitHub Repository</a>
+                </div>
+            </div>
+         
+            <div class="project">
+                <h3>Customer Churn Prediction</h3>
+                <p>Built a machine learning model to predict customer churn for a telecom dataset, using feature engineering and classification techniques. Evaluated model performance with metrics like AUC and precision, enhancing understanding of customer retention strategies.</p>
+                <p class="tech-stack">Tech Stack: Python, Scikit-learn, Pandas, Matplotlib</p>
+              
+            </div>
+            <div class="project">
+                <h3>Sentiment Analysis for Social Media</h3>
+                <p>Developed an NLP-based system to analyze sentiment in social media posts, identifying positive, negative, and neutral emotions. Preprocessed text data and trained models to achieve accurate sentiment classification, contributing to research on online user behavior.</p>
+                <p class="tech-stack">Tech Stack: Python, NLTK, Scikit-learn, Pandas</p>
+              
+            </div>
+            <div class="project">
+                <h3>House Price Prediction</h3>
+                <p>Created a regression model to predict house prices using a real estate dataset. Applied feature engineering and machine learning techniques to improve prediction accuracy, exploring factors influencing property values for academic research.</p>
+                <p class="tech-stack">Tech Stack: Python, Scikit-learn, Pandas, Matplotlib</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Ikhlaq Ahmad. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Dark Mode Toggle
+        const darkToggle = document.querySelector('.dark-toggle');
+        darkToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            darkToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        });
+
+        // Mobile Menu Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                if (window.innerWidth <= 768) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+
+        // Fade-in on Scroll
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>
