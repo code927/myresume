@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ikhlaq Ahmad's Data Science Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* CSS Variables for Theming */
         :root {
@@ -13,6 +14,8 @@
             --secondary-color: #6c757d;
             --shadow: 0 4px 12px rgba(0,0,0,0.1);
             --card-bg: #f8f9fa;
+            --gradient-start: #007bff;
+            --gradient-end: #0056d2;
         }
         body.dark-mode {
             --bg-color: #1a1a1a;
@@ -20,6 +23,8 @@
             --accent-color: #4da6ff;
             --secondary-color: #a0a0a0;
             --card-bg: #2c2c2c;
+            --gradient-start: #4da6ff;
+            --gradient-end: #2b6cb0;
         }
 
         /* Global Styles */
@@ -34,6 +39,7 @@
             color: var(--text-color);
             line-height: 1.6;
             transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
         }
         .container {
             max-width: 1200px;
@@ -46,6 +52,7 @@
             position: fixed;
             width: 100%;
             background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
             box-shadow: var(--shadow);
             z-index: 1000;
             transition: background 0.3s;
@@ -63,6 +70,12 @@
             font-size: 1.8em;
             font-weight: 700;
             color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i {
+            font-size: 1.2em;
         }
         .nav-links {
             display: flex;
@@ -70,24 +83,59 @@
         }
         .nav-links li {
             margin-left: 30px;
+            position: relative;
         }
         .nav-links a {
             text-decoration: none;
             color: var(--text-color);
             font-weight: 500;
             transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         .nav-links a:hover {
             color: var(--accent-color);
         }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
         .dark-toggle {
             cursor: pointer;
             font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            transition: transform 0.3s;
+        }
+        .dark-toggle:hover {
+            transform: rotate(30deg);
         }
         .menu-toggle {
             display: none;
             font-size: 1.5em;
             cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Hero Section */
@@ -97,21 +145,38 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            background: linear-gradient(135deg, var(--accent-color), #0056d2);
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
             color: #fff;
-            animation: fadeIn 1.2s ease-out;
+            position: relative;
+            overflow: hidden;
         }
-        #home .hero-content {
+        #home::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M0,128L48,117.3C96,107,192,85,288,112C384,139,480,213,576,218.7C672,224,768,160,864,138.7C960,117,1056,139,1152,138.7C1248,139,1344,117,1392,106.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
             max-width: 800px;
             padding: 20px;
         }
         #home h1 {
             font-size: 3.5em;
             margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         #home p {
             font-size: 1.3em;
             margin-bottom: 25px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         .btn {
             background: #fff;
@@ -120,18 +185,47 @@
             text-decoration: none;
             border-radius: 8px;
             font-weight: 500;
-            transition: transform 0.3s, background 0.3s;
+            transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .btn:hover {
-            transform: scale(1.05);
+            transform: translateY(-3px);
             background: var(--accent-color);
             color: #fff;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        /* Animated elements in hero */
+        .floating-icons {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .floating-icon {
+            position: absolute;
+            color: rgba(255,255,255,0.5);
+            font-size: 24px;
+            animation: float 15s infinite linear;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         /* Sections */
         section {
             padding: 100px 0;
-            animation: fadeInUp 1s ease-out;
             opacity: 0;
             transform: translateY(50px);
             transition: opacity 0.5s, transform 0.5s;
@@ -145,6 +239,21 @@
             font-size: 2.5em;
             margin-bottom: 50px;
             color: var(--accent-color);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
         }
 
         /* About */
@@ -155,16 +264,39 @@
             align-items: center;
             gap: 40px;
         }
-        #about img {
+        .profile-container {
+            position: relative;
             width: 220px;
             height: 220px;
+        }
+        #about img {
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             object-fit: cover;
             box-shadow: var(--shadow);
             transition: transform 0.3s;
+            position: relative;
+            z-index: 2;
+        }
+        .profile-container::before {
+            content: '';
+            position: absolute;
+            width: 110%;
+            height: 110%;
+            top: -5%;
+            left: -5%;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent-color), transparent 80%);
+            z-index: 1;
+            animation: rotate 10s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
         #about img:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
         #about .bio {
             max-width: 600px;
@@ -175,9 +307,42 @@
         #about .bio a {
             color: var(--accent-color);
             text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
         }
-        #about .bio a:hover {
-            text-decoration: underline;
+        #about .bio a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent-color);
+            transition: width 0.3s;
+        }
+        #about .bio a:hover::after {
+            width: 100%;
+        }
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            color: var(--accent-color);
+            transition: all 0.3s;
+        }
+        .social-links a:hover {
+            background: var(--accent-color);
+            color: #fff;
+            transform: translateY(-3px);
         }
 
         /* Skills */
@@ -189,32 +354,64 @@
         }
         #skills li {
             background: var(--card-bg);
-            padding: 15px;
+            padding: 20px;
             text-align: center;
-            border-radius: 8px;
+            border-radius: 12px;
             box-shadow: var(--shadow);
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
         }
         #skills li:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        #skills li i {
+            font-size: 2em;
+            color: var(--accent-color);
         }
 
         /* Projects */
         #projects .project {
             background: var(--card-bg);
-            padding: 25px;
+            padding: 30px;
             margin-bottom: 30px;
             border-radius: 12px;
             box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        #projects .project::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--accent-color);
+            transform: scaleY(0);
             transition: transform 0.3s;
+        }
+        #projects .project:hover::before {
+            transform: scaleY(1);
         }
         #projects .project:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
         #projects h3 {
             font-size: 1.8em;
             margin-bottom: 15px;
             color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #projects h3 i {
+            color: var(--accent-color);
         }
         #projects p {
             margin-bottom: 15px;
@@ -223,22 +420,81 @@
             font-style: italic;
             color: var(--secondary-color);
             margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        #projects .tech-stack span {
+            background: rgba(0,123,255,0.1);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9em;
         }
         #projects .project-links a {
             margin-right: 15px;
             color: var(--accent-color);
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
         }
         #projects .project-links a:hover {
             text-decoration: underline;
+            gap: 8px;
+        }
+        .context {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* Footer */
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 40px 20px;
             background: var(--secondary-color);
             color: #fff;
+            position: relative;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
 
         /* Animations */
@@ -272,7 +528,7 @@
                 text-align: center;
             }
             .menu-toggle {
-                display: block;
+                display: flex;
             }
             #about {
                 flex-direction: column;
@@ -287,23 +543,21 @@
             #home p {
                 font-size: 1.1em;
             }
-  #projects .context {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 1.1em;
-        }
+            .floating-icon {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <nav class="container">
-            <div class="logo">Ikhlaq Ahmad</div>
+            <div class="logo"><i class="fas fa-brain"></i>Ikhlaq Ahmad</div>
             <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
+                <li><a href="#home"><i class="fas fa-home"></i>Home</a></li>
+                <li><a href="#about"><i class="fas fa-user"></i>About</a></li>
+                <li><a href="#skills"><i class="fas fa-code"></i>Skills</a></li>
+                <li><a href="#projects"><i class="fas fa-project-diagram"></i>Projects</a></li>
             </ul>
             <div class="dark-toggle">🌙</div>
             <div class="menu-toggle">☰</div>
@@ -311,10 +565,13 @@
     </header>
 
     <section id="home">
+        <div class="floating-icons">
+            <!-- These will be added dynamically with JavaScript -->
+        </div>
         <div class="hero-content">
             <h1>Data Science & Machine Learning Portfolio</h1>
-            <p>Building innovative AI and data-driven solutions</p>
-            <a href="#projects" class="btn">Explore My Work</a>
+            <p>Transforming data into intelligent solutions</p>
+            <a href="#projects" class="btn">Explore My Work <i class="fas fa-arrow-down"></i></a>
         </div>
     </section>
 
@@ -322,10 +579,18 @@
         <div class="container">
             <h2>About Me</h2>
             <div class="flex">
-               
+                <div class="profile-container">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Ikhlaq Ahmad">
+                </div>
                 <div class="bio">
-                    <p>Computer Science graduate with expertise in Machine Learning, NLP, and Data Science, proficient in SQL, PostgreSQL, and Python for data-driven solutions. I led the development of an AI-Based Career Guidance Platform for my Bachelor thesis, focusing on scalable ML and NLP systems. Passionate about advancing AI research, I aim to contribute to cutting-edge innovations through a Master’s in Germany.</p>
+                    <p>Computer Science graduate with expertise in Machine Learning, NLP, and Data Science, proficient in SQL, PostgreSQL, and Python for data-driven solutions. I led the development of an AI-Based Career Guidance Platform for my Bachelor thesis, focusing on scalable ML and NLP systems. Passionate about advancing AI research, I aim to contribute to cutting-edge innovations through a Master's in Germany.</p>
                     <p>GitHub: <a href="https://github.com/code927">code927</a> | Email: <a href="mailto:ikhlaq.ahmad.official@gmail.com">ikhlaq.ahmad.official@gmail.com</a> | Phone: +92 315 4252919</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -335,70 +600,66 @@
         <div class="container">
             <h2>Skills</h2>
             <ul>
-                <li>Machine Learning</li>
-                <li>Natural Language Processing (NLP)</li>
-                <li>Data Science</li>
-                <li>SQL</li>
-                <li>PostgreSQL</li>
-                <li>Python</li>
-                <li>JavaScript</li>
-                <li>Data Visualization</li>
-                <li>Scikit-learn</li>
-                <li>TensorFlow</li>
-                <li>NLTK</li>
-                <li>Pandas</li>
-                <li>Matplotlib</li>
+                <li><i class="fas fa-robot"></i>Machine Learning</li>
+                <li><i class="fas fa-language"></i>Natural Language Processing (NLP)</li>
+                <li><i class="fas fa-chart-line"></i>Data Science</li>
+                <li><i class="fas fa-database"></i>SQL</li>
+                <li><i class="fas fa-server"></i>PostgreSQL</li>
+                <li><i class="fab fa-python"></i>Python</li>
+                <li><i class="fab fa-js"></i>JavaScript</li>
+                <li><i class="fas fa-chart-bar"></i>Data Visualization</li>
+                <li><i class="fas fa-cogs"></i>Scikit-learn</li>
+                <li><i class="fas fa-project-diagram"></i>TensorFlow</li>
+                <li><i class="fas fa-code"></i>NLTK</li>
+                <li><i class="fas fa-table"></i>Pandas</li>
+                <li><i class="fas fa-chart-area"></i>Matplotlib</li>
             </ul>
         </div>
     </section>
 
     <section id="projects">
-
         <div class="container">
             <h2>Projects</h2>
-      <p class="context">Below are selected academic and personal projects demonstrating my expertise in machine learning, natural language processing, and data science, developed to solve real-world problems and advance my research skills.</p>
+            <p class="context">Below are selected academic and personal projects demonstrating my expertise in machine learning, natural language processing, and data science, developed to solve real-world problems and advance my research skills.</p>
 
             <div class="project">
-                <h3>AI-Based Career Guidance Platform</h3>
+                <h3><i class="fas fa-robot"></i>AI-Based Career Guidance Platform</h3>
                 <p>Led the development of a scalable ML recommendation engine and NLP-based job-matching module for a career guidance platform. Utilized advanced algorithms to match user profiles with job opportunities, achieving high accuracy and real-world applicability. Integrated with PostgreSQL for efficient data management.</p>
-                <p class="tech-stack">Tech Stack: Python, TensorFlow, NLTK, PostgreSQL</p>
+                <p class="tech-stack">Tech Stack: <span>Python</span> <span>TensorFlow</span> <span>NLTK</span> <span>PostgreSQL</span></p>
                 <div class="project-links">
-                    <a href="https://brilliant-truffle-2d0d47.netlify.app/">View Site</a>
+                    <a href="https://brilliant-truffle-2d0d47.netlify.app/"><i class="fas fa-external-link-alt"></i>View Site</a>
                 </div>
             </div>
             <div class="project">
-                <h3>Breast Cancer Prediction</h3>
+                <h3><i class="fas fa-heartbeat"></i>Breast Cancer Prediction</h3>
                 <p>Developed a machine learning model to predict breast cancer malignancy using the Wisconsin Breast Cancer Dataset. Implemented data preprocessing, feature selection, and classification algorithms in Python, achieving high accuracy. Built a web interface for user-friendly predictions.</p>
-                <p class="tech-stack">Tech Stack: Python, Scikit-learn, Jupyter Notebook, HTML, Flask</p>
+                <p class="tech-stack">Tech Stack: <span>Python</span> <span>Scikit-learn</span> <span>Jupyter Notebook</span> <span>HTML</span> <span>Flask</span></p>
                 <div class="project-links">
-                    <a href="https://github.com/code927/Breast-Cancer-Prediction">GitHub Repository</a>
+                    <a href="https://github.com/code927/Breast-Cancer-Prediction"><i class="fab fa-github"></i>GitHub Repository</a>
                 </div>
             </div>
             <div class="project">
-                <h3>Movie Recommendation App</h3>
+                <h3><i class="fas fa-film"></i>Movie Recommendation App</h3>
                 <p>Developed a movie recommendation system using collaborative filtering and content-based ML algorithms. Implemented a user-friendly interface with JavaScript and integrated APIs for real-time movie data retrieval. Optimized for performance and user engagement.</p>
-                <p class="tech-stack">Tech Stack: JavaScript, React, REST APIs</p>
+                <p class="tech-stack">Tech Stack: <span>JavaScript</span> <span>React</span> <span>REST APIs</span></p>
                 <div class="project-links">
-                    <a href="https://github.com/code927/movie-app">GitHub Repository</a>
+                    <a href="https://github.com/code927/movie-app"><i class="fab fa-github"></i>GitHub Repository</a>
                 </div>
             </div>
-         
             <div class="project">
-                <h3>Customer Churn Prediction</h3>
+                <h3><i class="fas fa-user-friends"></i>Customer Churn Prediction</h3>
                 <p>Built a machine learning model to predict customer churn for a telecom dataset, using feature engineering and classification techniques. Evaluated model performance with metrics like AUC and precision, enhancing understanding of customer retention strategies.</p>
-                <p class="tech-stack">Tech Stack: Python, Scikit-learn, Pandas, Matplotlib</p>
-              
+                <p class="tech-stack">Tech Stack: <span>Python</span> <span>Scikit-learn</span> <span>Pandas</span> <span>Matplotlib</span></p>
             </div>
             <div class="project">
-                <h3>Sentiment Analysis for Social Media</h3>
+                <h3><i class="fas fa-smile"></i>Sentiment Analysis for Social Media</h3>
                 <p>Developed an NLP-based system to analyze sentiment in social media posts, identifying positive, negative, and neutral emotions. Preprocessed text data and trained models to achieve accurate sentiment classification, contributing to research on online user behavior.</p>
-                <p class="tech-stack">Tech Stack: Python, NLTK, Scikit-learn, Pandas</p>
-              
+                <p class="tech-stack">Tech Stack: <span>Python</span> <span>NLTK</span> <span>Scikit-learn</span> <span>Pandas</span></p>
             </div>
             <div class="project">
-                <h3>House Price Prediction</h3>
+                <h3><i class="fas fa-home"></i>House Price Prediction</h3>
                 <p>Created a regression model to predict house prices using a real estate dataset. Applied feature engineering and machine learning techniques to improve prediction accuracy, exploring factors influencing property values for academic research.</p>
-                <p class="tech-stack">Tech Stack: Python, Scikit-learn, Pandas, Matplotlib</p>
+                <p class="tech-stack">Tech Stack: <span>Python</span> <span>Scikit-learn</span> <span>Pandas</span> <span>Matplotlib</span></p>
             </div>
         </div>
     </section>
@@ -406,6 +667,8 @@
     <footer>
         <p>&copy; 2025 Ikhlaq Ahmad. All rights reserved.</p>
     </footer>
+
+    <a href="#home" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
 
     <script>
         // Dark Mode Toggle
@@ -445,6 +708,29 @@
             });
         }, { threshold: 0.1 });
         sections.forEach(section => observer.observe(section));
+
+        // Back to top button
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // Create floating icons in hero section
+        const floatingIconsContainer = document.querySelector('.floating-icons');
+        const icons = ['fa-brain', 'fa-chart-line', 'fa-database', 'fa-robot', 'fa-code', 'fa-project-diagram', 'fa-cogs', 'fa-microchip'];
+        
+        for (let i = 0; i < 20; i++) {
+            const icon = document.createElement('i');
+            icon.className = `floating-icon fas ${icons[Math.floor(Math.random() * icons.length)]}`;
+            icon.style.left = `${Math.random() * 100}%`;
+            icon.style.animationDelay = `${Math.random() * 5}s`;
+            icon.style.animationDuration = `${15 + Math.random() * 10}s`;
+            floatingIconsContainer.appendChild(icon);
+        }
     </script>
 </body>
 </html>
